@@ -1,7 +1,7 @@
 import asyncio
 import json
 import pandas as pd
-from sentence_transformers import SentenceTransformer
+from utils.mini_embedder import MiniLMEmbedder
 from utils.elastic_search import ElasticSearch
 from elasticsearch import helpers
 from utils.elasticsearch_client import es_client
@@ -26,15 +26,13 @@ class DataSet:
                 parsed = json.loads(json_data)
     
                 mapping = {
-                    "mappings": {
-                        "properties": {
-                            "skill": {"type": "text"},
-                            "embedding": {
-                                "type": "dense_vector",
-                                "dims": 384,
-                                "index": True,
-                                "similarity": "cosine"
-                            }
+                    "properties": {
+                        "skill": {"type": "text"},
+                        "embedding": {
+                            "type": "dense_vector",
+                            "dims": 384,
+                            "index": True,
+                            "similarity": "cosine"
                         }
                     }
                 }
@@ -95,9 +93,9 @@ class DataSet:
         parsed = parsed_data
 
 
-        model = SentenceTransformer("all-MiniLM-L6-v2")
+        model = MiniLMEmbedder()
         skills = parsed["skills"]
-        embeddings = model.encode(skills, batch_size=64, show_progress_bar=True)
+        embeddings = model.encode(skills, batch_size=64)
 
         actions = [
             {

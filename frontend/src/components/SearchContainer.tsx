@@ -110,9 +110,11 @@ export function SearchContainer() {
       }
 
       if (!tags.length && showRecommendedJobs) return
-        saveFilters();
-        const filters = getCombinedFilters();
-        await handleSearch(filters);
+      if (!tags.length && !selectedCompanies.length && !selectedJobTypes.length && yearsExp === 0) return;
+      
+      saveFilters();
+      const filters = getCombinedFilters();
+      await handleSearch(filters);
     };
 
     performSearch();
