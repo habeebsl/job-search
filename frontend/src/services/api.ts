@@ -15,7 +15,7 @@ interface ResumeText {
 
 export const apiService = {
     async uploadResume (formData: FormData) {
-        return await apiClient.post("/users/resume/upload/", formData, {
+        return await apiClient.post("/users/resume/upload", formData, {
             headers: {
                 "Content-Type": "multipart/form-data",
             }
@@ -23,7 +23,7 @@ export const apiService = {
     },
 
     async getUserJobs (text: ResumeText) {
-        return await apiClient.post("/jobs/user-jobs/", text)
+        return await apiClient.post("/jobs/user-jobs", text)
     },
 
     async getJobs (keyword: string, location: string) {
