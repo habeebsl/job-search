@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from utils.elasticsearch_client import es_client
-from routes import job, user
+from routes import job, user, health
 
 app = FastAPI()
 
@@ -17,3 +17,4 @@ es = es_client
 
 app.include_router(user.router, prefix="/api", tags=["user"])
 app.include_router(job.router, prefix="/api", tags=["job"])
+app.include_router(health.router, prefix="/api", tags=["health"])
