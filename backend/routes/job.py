@@ -18,7 +18,7 @@ async def search_jobs(keyword: str, location: str):
     return jobs
 
 
-@router.post("/user-jobs/")
+@router.post("/user-jobs")
 async def get_jobs_from_resume(resume_text: schemas.ResumeText):
     dataset = DataSet()
     skills_dataset = await dataset.get_dataset()
