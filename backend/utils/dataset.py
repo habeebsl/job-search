@@ -1,7 +1,7 @@
 import asyncio
 import json
 import pandas as pd
-from utils.mini_embedder import MiniLMEmbedder
+from utils.openai_embedder import OpenAIEmbedder
 from utils.elastic_search import ElasticSearch
 from elasticsearch import helpers
 from utils.elasticsearch_client import es_client
@@ -30,7 +30,7 @@ class DataSet:
                         "skill": {"type": "text"},
                         "embedding": {
                             "type": "dense_vector",
-                            "dims": 384,
+                            "dims": 1536,
                             "index": True,
                             "similarity": "cosine"
                         }
@@ -93,9 +93,9 @@ class DataSet:
         parsed = parsed_data
 
 
-        model = MiniLMEmbedder()
+        model = OpenAIEmbedder()
         skills = parsed["skills"]
-        embeddings = model.encode(skills, batch_size=64)
+        embeddings = model.encode(skills, batch_size=1000)
 
         actions = [
             {
@@ -108,7 +108,7 @@ class DataSet:
             for skill, embedding in zip(skills, embeddings)
         ]
 
-        await helpers.async_bulk(es_client, actions)
+        await helpers.async_bulk(es_client, actions, chunk_size=500)
         print("Bulk indexing completed.")
 
 

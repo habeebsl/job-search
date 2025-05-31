@@ -3,7 +3,7 @@ import spacy
 from io import BytesIO
 import docx
 import fitz
-from utils.mini_embedder import MiniLMEmbedder
+from utils.openai_embedder import OpenAIEmbedder
 from utils.elastic_search import ElasticSearch
 from utils.elasticsearch_client import es_client
 
@@ -14,7 +14,7 @@ class Resume:
         self.file_bytes = file_bytes
         self.filename = filename
         self.search = ElasticSearch(es_client)
-        self.model = MiniLMEmbedder()
+        self.model = OpenAIEmbedder()
 
     def get_extension(self) -> str:
         return os.path.splitext(self.filename)[1].lower()
